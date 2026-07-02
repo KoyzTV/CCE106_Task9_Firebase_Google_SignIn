@@ -1,6 +1,8 @@
-import "package:flutter/material.dart";
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'crud_service.dart';
+import 'auth_service.dart';
+import 'login.dart';
 
 class HomePage extends StatelessWidget {
   final CrudService service = CrudService();
@@ -17,10 +19,28 @@ class HomePage extends StatelessWidget {
         title: const Text('Firebase Tanudtanud'),
         centerTitle: true,
         backgroundColor: Colors.teal,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () async {
+              await AuthService().signOut();
+
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => LoginPage(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.teal,
-        child: const Icon(Icons.add, color: Colors.white),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
         onPressed: () => openAddDialog(context),
       ),
       body: StreamBuilder<QuerySnapshot>(
